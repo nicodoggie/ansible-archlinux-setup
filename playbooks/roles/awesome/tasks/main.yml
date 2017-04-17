@@ -1,0 +1,23 @@
+- name: Install Awesome WM and tools
+  pacman: "pkg={{ item }} state=present"
+  with_items: 
+  - awesome
+  - dex
+
+- name: Create awesome config directories
+  file: "path=/home/{{ item }}/.config/awesome state=directory"
+  with_items: "{{ unix_users }}"
+
+- name: Add config to users
+  copy: "src=rc.lua dest=/home/{{ item }}/.config/awesome/rc.lua"
+  with_items: "{{ unix_users }}"
+
+- name: Make autostart directory
+  file: "state=directory path=/home/{{ item }}/.config/autostart"
+  with_items: "{{ unix_users }}"
+
+- name: Add programs to autostart
+  shell: "/usr/bin/dex -e awesome -c {{ item[1] }} -t /home/{{ item[0] }}/.config/autostart"
+  with_nested:
+    - "{{ unix_users }}"
+    - "{{ autostart_apps }}"

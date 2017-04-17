@@ -1,0 +1,26 @@
+- name: Set timezone
+  file: "state=link src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime"
+
+- name: Generate adjtime
+  become: yes
+  shell: "/usr/bin/hwclock --systohc"
+  args:
+    creates: /etc/adjtime
+
+- name: Add locale to locale.gen
+  become: yes
+  lineinfile: "state=present line={{ locale }} path=/etc/locale.gen"
+
+- name: Generate locale
+  become: yes
+  shell: "/usr/bin/locale-gen"
+  args:
+    creates: /usr/lib/locale/locale-archive
+
+- name: Get pacaur
+  git: "repo=https://aur.archlinux.org/pacaur.git dest=/tmp/pacaur"
+
+- name: Build and install pacaur
+  shell: "/usr/bin/makepkg -si --noconfirm --noprogressbar"
+  args:
+    chdir: /tmp/pacaur/

@@ -1,0 +1,8 @@
+- name: Install productivity tools from pacaur
+  shell: "pacaur -Sa --noconfirm --noprogressbar {{ item }}"
+  with_flattened:
+   - ulauncher
+   - slack-desktop
+   - google-chrome
+  args:
+    creates: /usr/bin/ulauncher

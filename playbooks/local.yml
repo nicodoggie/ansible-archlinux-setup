@@ -1,0 +1,15 @@
+- hosts: 127.0.0.1
+  connection: local
+  roles:
+    - arch-common
+    - productivity
+    - awesome
+    - { "role": "language-support" }
+  vars:
+    timezone: "Asia/Manila"
+    locale: en_US.UTF-8
+    unix_users:
+      - nico
+    autostart_apps:
+      - /usr/bin/slack
+      - /usr/bin/ulauncher

@@ -1,0 +1,4 @@
+---
+
+- name: Install ibus IPA/X-SAMPA input
+  shell: "pacaur -Sa --noconfirm --noprogress ibus-table-others"
